@@ -29,7 +29,7 @@ const getQuestions=(req,res)=>{
     return res.status(400).json({ error: "请提供有效的题目数量" });
 }
       const questions = [];
-      for (let i = 0; i < countNum; i++) {
+      for (let i = 0; i < 30; i++) {
         questions.push(generationQuestion());
       }
       console.log("Generated questions:", questions); // 打印所有生成的题目
