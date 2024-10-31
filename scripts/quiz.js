@@ -9,6 +9,7 @@ let currentQuestionIndex=0;
 let correctAnswerNum=0;
 let isSubmitButtonCreated = false;//状态变量用来跟踪提交按钮是否已创建
 
+//获取模式
 const mode1=document.getElementById('mode1');
 const mode2=document.getElementById('mode2');
 let flag=0;
@@ -83,6 +84,7 @@ export  function displayQuestions(questions){
     // 将处理逻辑提取为具名函数
     function handleSubmit() {
         if (flag === 1) {
+
             questions.forEach((question, index) => {
                 const userAnswerInput = document.getElementById(`${index}`);
                 const userAnswer = parseFloat(userAnswerInput.value);
@@ -93,6 +95,7 @@ export  function displayQuestions(questions){
                 } else {
                     console.log(`Incorrect! The correct answer was ${correctAnswer}, your answer is ${userAnswer}`);
                 }
+                endQuiz(questions);
             });
             submit.removeEventListener('click', handleSubmit); // 移除监听器
         } else if (flag === 0) {
@@ -109,7 +112,7 @@ export  function displayQuestions(questions){
             currentQuestionIndex++;
             if (currentQuestionIndex < questions.length) {
                 displayQuestions(questions); // 显示下一道题
-                
+                submitAnswer(questions);
             } else {
                 endQuiz(questions);
                 submit.removeEventListener('click', handleSubmit); // 移除监听器
