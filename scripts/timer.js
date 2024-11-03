@@ -1,5 +1,5 @@
 //计时功能模块
-import { flag,totalScore,correctAnswerNum,currentQuestionIndex,score, handleSubmit } from "./quiz.js";
+import { flag,totalScore,correctAnswerNum,currentQuestionIndex,score, handleSubmit,isFinish,endQuiz } from "./quiz.js";
 import { questions } from "./main.js";
 
 let intervalId = null;
@@ -25,12 +25,17 @@ function updateTime(){
    minutes= minutes<10?'0'+minutes:minutes;
    seconds =seconds<10?'0'+seconds:seconds;
    if(totalTime<=0){//做到超时暂停倒计时且结算分数
+       endQuiz(questions);
        clearInterval(intervalId);
        if(flag===1)
+       {
        handleSubmit(questions);
+       }
+    if(flag===0){
         let finalScore=totalScore();    
         score.innerHTML=`${finalScore}`;
         document.body.appendChild(score);
+    }
        alert("倒计时结束答题时间已到");
    }
    else{
