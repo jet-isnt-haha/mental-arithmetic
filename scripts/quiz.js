@@ -6,7 +6,6 @@ export const score =document.createElement('div');
 //获取题目数据
 
 let endTimeScore=0;
-let question =[];
 const submitAreas=[];
 export let currentQuestionIndex=0;
 export let correctAnswerNum=0;
@@ -16,9 +15,18 @@ const mode1=document.getElementById('mode1');
 const mode2=document.getElementById('mode2');
 //模式标识
 export let flag=0;
-//结束标识
-export let isFinish =false;
-
+//提交按钮
+let submit=null;
+//总数据
+let totalData=[];
+//最终题目数据
+let quizs=[];
+export function getTotalData(){
+    return totalData;
+}
+export function getSubmit(){
+    return submit;
+}
 
 export async function fetchQuestions(count) {
     try{
@@ -87,13 +95,77 @@ export  function displayQuestions(questions){
     questionsContainer.appendChild(submitAnswer);
     buttonCheck(submitAnswer,submitAreas);
   };
-let submit=null;
+//获取测试的日期时间
+function testDataTime()
+{
+
+    //将Date对象转换为YYYY-MM-DD HH:MM:SS并将UTC时间转换为北京时间
+    const now =new Date();
+    now.setHours(now.getHours()+8);
+    const testDataTime=now.toISOString().slice(0,19).replace('T',' ');
+    return testDataTime;
+}
+// 添加单次测验数据到总数据
+export function addQuizDataToTotal() {
+
+    // 将 quizs 和其他信息作为单个测验记录存入 totalData
+    totalData.push({
+        mode :flag,
+        datetime:testDataTime(),
+        totalScore: totalScore(),
+        quizs: [...quizs] // 深拷贝 quizs 以保存当前状态
+    });
+
+    totalData.forEach((record, index) => {
+        // console.log(`记录 ${index + 1}:  总分 - ${record.totalScore()} 测试时间 - ${record.datetime}  模式 - ${record.mode}`);
+        
+        // 遍历 quizs 内的每一道题目
+        // record.quizs.forEach((quiz, quizIndex) => {
+        //   console.log(`  题目 ${quizIndex + 1}: ${quiz.num1} ${quiz.operation} ${quiz.num2}`);
+        //   console.log(`  用户答案: ${quiz.userAnswer}, 正确答案: ${quiz.correctAnswer}`);
+        // });
+      });
+      
+    //清空 quizs 以便进行下一次测验
+    quizs = [];
+
+}
+
+export async function sendTotalData(data){
+    try{
+        const response =await fetch('http://localhost:9000/submitAnswer',{
+            method:'POST',
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(data)
+        });
+        if(response.ok)
+        {
+            const result= await response.json();
+            console.log("服务器响应:",result.message);
+        }else{
+            console.error("数据发送失败",response.status);
+        }
+    }catch(error){
+        console.error("发送数据时出错：",error);
+    }
+}
+
 export  function handleSubmit(questions) {
     if (flag === 1) {
         questions.forEach((question,index) => {
             const userAnswerInput = document.getElementById(`${index}`);
             const userAnswer = parseFloat(userAnswerInput.value);
             const correctAnswer = calculateAnswer(questions[index]);
+            quizs.push({
+                id:index+1,
+                num1:question.num1,
+                operation:question.operation,
+                num2:question.num2,
+                userAnswer:userAnswer,
+                correctAnswer:correctAnswer
+            })
             if (checkAnswer(userAnswer, correctAnswer)) {
                 correctAnswerNum++;
                 console.log("Correct");
@@ -106,6 +178,9 @@ export  function handleSubmit(questions) {
         endTimeScore=timeScore();
         submit.removeEventListener('click', () => handleSubmit(questions)); // 移除监听器
         let finalScore=totalScore();
+         // 将当前测验数据添加到总数据数组
+         addQuizDataToTotal();
+         sendTotalData(totalData[totalData.length - 1]);//发送最新添加记录
         score.innerHTML=`${finalScore}`;
     } else if (flag === 0) {
         const userAnswerInput = document.getElementById(`${currentQuestionIndex}`);
@@ -119,10 +194,20 @@ export  function handleSubmit(questions) {
         }
         currentQuestionIndex++;
         if (currentQuestionIndex < questions.length) {
+            quizs.push({
+                id:currentQuestionIndex+1,
+                num1:questions[currentQuestionIndex].num1,
+                operation:questions[currentQuestionIndex].operation,
+                num2:questions[currentQuestionIndex].num2,
+                userAnswer:userAnswer,
+                correctAnswer:correctAnswer
+            })
             displayQuestions(questions); // 显示下一道题
             submitAnswer(questions);
         } else {
             endQuiz(questions);
+            addQuizDataToTotal();
+            sendTotalData(totalData[totalData.length - 1]);
             submit.removeEventListener('click', () => handleSubmit(questions)); // 移除监听器
         }
     }
@@ -200,7 +285,6 @@ if(flag===0){
 
 //清空题目
 export function clearQuiz(){
-    isFinish=false;
     const questionsContainer = document.getElementById('questions-container');
     const resultsContainer =document.getElementById("results-container");
     if(questionsContainer)
@@ -214,7 +298,6 @@ export function clearQuiz(){
 }
 
 //结算成绩
-
 export function totalScore(){
  if(flag===1)
  {

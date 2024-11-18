@@ -10,6 +10,16 @@ const port=9000; //端口号
 
 app.use(cors());//启用CORS
 
+//使用json中间件解析json数据
+app.use(express.json());
+
+
+
+
+
+//引入并挂载处理提交路由
+const dataRoutes =require('./route/data');
+app.use('/',dataRoutes);
 
 //引入并挂载题目路由
 const quizRoutes=require("./route/questions");

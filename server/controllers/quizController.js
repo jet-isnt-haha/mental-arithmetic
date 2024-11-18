@@ -5,7 +5,7 @@ const operations =['+','-','*','/'];
 const operation =operations[Math.floor(Math.random()*operations.length)];
 
 let num1=Math.floor(Math.random()*100);
-let num2 =Math.floor(Math.random()*100);
+let num2 =Math.floor(Math.random()*100)+1;
 
 //确保除法可以整除
 if(operation==='/'&&num2!==0){
