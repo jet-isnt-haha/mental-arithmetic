@@ -1,5 +1,5 @@
 //计时功能模块
-import { flag,totalScore,correctAnswerNum,currentQuestionIndex,score, handleSubmit,isFinish,endQuiz } from "./quiz.js";
+import { flag,totalScore,correctAnswerNum,currentQuestionIndex,score, handleSubmit,endQuiz,addQuizDataToTotal,sendTotalData,getTotalData,getSubmit } from "./quiz.js";
 import { questions } from "./main.js";
 
 let intervalId = null;
@@ -34,7 +34,10 @@ function updateTime(){
     if(flag===0){
         let finalScore=totalScore();    
         score.innerHTML=`${finalScore}`;
+        addQuizDataToTotal();
+        sendTotalData(getTotalData()[getTotalData().length - 1]);
         document.body.appendChild(score);
+        getSubmit().removeEventListener('click', () => handleSubmit(questions));
     }
        alert("倒计时结束答题时间已到");
    }
