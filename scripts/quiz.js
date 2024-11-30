@@ -63,35 +63,40 @@ export function calculateAnswer(question){
         return null;
     }
 }
-
-//显示题目
 export  function displayQuestions(questions){
+
+    const recordsContainer = document.getElementById('records-container');
     const questionsContainer = document.getElementById('questions-container');
     questionsContainer.innerHTML = ''; // 清空之前的题目
+    recordsContainer.innerHTML='';
     if(flag===1)
     {
     questions.forEach((question, index) => {
       const questionElement = document.createElement('div');
       const submitArea=document.createElement('input');
+      questionElement.className='quizs';
       submitArea.id=`${index}`;
+      submitArea.className='submit-area';
       submitAreas.push(submitArea);
       inputCheck(submitArea);
-      questionElement.textContent = `Question ${index + 1}: ${question.questionText}`;
+      questionElement.textContent = `${index + 1}: ${question.questionText}`;
       questionsContainer.appendChild(questionElement);
       questionsContainer.appendChild(submitArea);
     });}
     else if(flag===0){
         const questionElement = document.createElement('div');
         const submitArea=document.createElement('input');
+        questionElement.className='quizs';
         submitArea.id=`${currentQuestionIndex}`;
         inputCheck(submitArea);
-        questionElement.textContent = `Question ${currentQuestionIndex + 1}: ${questions[currentQuestionIndex].questionText}`;
+        questionElement.textContent = `${currentQuestionIndex + 1}: ${questions[currentQuestionIndex].questionText}`;
         questionsContainer.appendChild(questionElement);
         questionsContainer.appendChild(submitArea);
     }
     const submitAnswer=document.createElement('button');
     submitAnswer.textContent=`提交答案`;
     submitAnswer.id=`btn${currentQuestionIndex}`;
+    submitAnswer.className='submit-btn';
     questionsContainer.appendChild(submitAnswer);
     buttonCheck(submitAnswer,submitAreas);
   };

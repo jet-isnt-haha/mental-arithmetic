@@ -9,6 +9,6 @@ const {getQuestions}=require("../controllers/quizController");
 
 //定义获取题目的路由
 
-router.get("/",getQuestions);
+router.get("/questions",getQuestions);
 
 module.exports=router;

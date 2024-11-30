@@ -1,22 +1,186 @@
-/* body{
+body{
+overflow:hidden;
+display: flex;
+}
+.menu {
     display: flex;
-    justify-content: center;
+    justify-content: left;
+    border-color: rgb(76, 9, 138);
+    border-radius: 5%;
+    border-width: 50px; /* 或其他宽度 */
+    border-style: solid; /* 设置边框样式 */
 }
 #mode1{
     left: 50%;
     margin: 5%;
     background-color:aqua;
     border: none;
-    border-radius: 20%;
-    width: 5vw;
-    height: 5vh;
+    border-radius: 5%;
+    width: 10vw;
+    height: 10vh;
 }
 #mode2{
     left: 50%;
     margin: 5%;
     background-color:aqua;
     border: none;
-    border-radius: 20%;
-    width: 5vw;
-    height: 5vh;
+    border-radius: 5%;
+    width: 10vw;
+    height: 10vh;
+}
+#record{
+    left: 50%;
+    margin: 5%;
+    background-color:aqua;
+    border: none;
+    border-radius: 5%;
+    width: 10vw;
+    height: 10vh;
+}
+#questions-container{
+    display: grid; /* 使用网格布局 */
+    grid-auto-flow:row; /* 项目按列排列 */
+    grid-template-columns: repeat(auto-fill, minmax(90px, auto)); /* 每行的最小高度 */
+    grid-auto-columns: 100px; /* 每列的宽度 */
+    gap: 50px; /* 设置图标间距 */
+    padding: 10px; /* 给容器一些内边距 */
+    overflow: auto;
+}
+#records-container{
+    display: flex;
+    flex-direction: column;
+    gap: 50px; /* 设置图标间距 */
+    padding: 10px; /* 给容器一些内边距 */
+    overflow: auto;
+}
+/* .detail-quizs{
+    
 } */
+.records{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.container{
+    transform: translate(-50%,-50%);
+    width: 600px; /* 使用整个视口的宽度 */
+    height: 600px; /* 使用整个视口的高度 */
+    position: fixed;
+    top:50%;
+    left: 50%;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: rgb(110, 94, 94);
+    display:flex;
+    flex-direction: column;
+}
+.submit-area{
+    width: 100%;
+    height: 5vh;
+    margin: 0%;
+    flex-grow: 1;
+    border: none;
+    border-radius: 10%;
+}
+.quizs{
+    width: 100%;
+    height: 5vh;
+    margin: 0%;
+    flex-grow: 1;
+    border: none;
+    background-color: aquamarine;
+    border-radius: 5%;
+}
+.submit-btn{
+    border-radius: 5%;
+    background-color:rgba(18, 221, 153, 0.5);
+}
+#time{
+    position:fixed;
+    bottom: 0;
+}
+.drag-window{
+    width: 100%;
+    height: 30px; 
+    background-color: aliceblue;
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+}
+.drag-window::before{
+    content:"";
+    display: block;
+    width: 12px;
+    height: 12px;
+    background-color: red;
+    position: absolute;
+    left:15px;
+    top:15px;
+    transform: translateY(-50%);
+    border-radius: 50%;
+}
+
+.close{
+    position: absolute;/* 相对最近祖先元素的定位 */
+    background-color: rgba(0, 255, 170, 0);/* 按钮背景框为透明 */
+    height: 30px;
+    width: 7%;
+    border:none;/* 去掉按钮边框 */
+    right:0;
+    display: flex;
+    justify-content: center;
+    align-items:center ;
+}
+.close:hover{
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
+}
+
+.maximize{
+    position: absolute;/* 相对最近祖先元素的定位 */
+    background-color: rgba(0, 255, 170, 0);/* 按钮背景框为透明 */
+    height: 30px;
+    width: 7%;
+    border:none;/* 去掉按钮边框 */
+    right:7%;
+    display: flex;
+    justify-content: center;
+    align-items:center ;
+}
+
+.maximize:hover{
+    background-color: rgba(174, 166, 166, 0.848);
+    color: white;
+}
+.windowing{
+    position: absolute;/* 相对最近祖先元素的定位 */
+    background-color: rgba(0, 255, 170, 0);/* 按钮背景框为透明 */
+    height: 30px;
+    width: 7%;
+    border:none;/* 去掉按钮边框 */
+    right:7%;
+    display: flex;
+    justify-content: center;
+    align-items:center ;
+    visibility:hidden;
+}
+.windowing:hover{
+    background-color: rgba(174, 166, 166, 0.848);
+    color: white;
+}
+.minimize{
+    position: absolute;/* 相对最近祖先元素的定位 */
+    background-color: rgba(0, 255, 170, 0);/* 按钮背景框为透明 */
+    height: 30px;
+    width: 7%;
+    border:none;/* 去掉按钮边框 */
+    right:14%;
+    display: flex;
+    justify-content: center;
+    align-items:center ;  
+}
+
+.minimize:hover{
+    background-color: rgba(174, 166, 166, 0.848);
+    color: white;
+}

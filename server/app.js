@@ -15,15 +15,21 @@ app.use(express.json());
 
 
 
+//获取历史详细题目集路由
+const getHistoryQuizs=require('./route/getDetailedQuizs');
+app.use('/',getHistoryQuizs);
 
+//获取历史记录路由
+const getRoute=require('./route/getData');
+app.use('/',getRoute)
 
 //引入并挂载处理提交路由
-const dataRoutes =require('./route/data');
+const dataRoutes =require('./route/saveData');
 app.use('/',dataRoutes);
 
 //引入并挂载题目路由
 const quizRoutes=require("./route/questions");
-app.use("/questions",quizRoutes);
+app.use("/",quizRoutes);
 
 app.listen(port,()=>{
   console.log(`Server listening on port port${port}`);
