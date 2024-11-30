@@ -13,8 +13,8 @@ export function countDown(requiredTime){
 time =document.createElement('div');
 time.id='time';
 updateTime();
-    document.body.appendChild(time);
-intervalId=setInterval(updateTime,100);
+    document.querySelector('.container').appendChild(time);
+intervalId=setInterval(updateTime,1000);
 document.addEventListener('DOMContentLoaded',(e)=>{
     updateTime();
 })
